@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#define PORT 9999
+#define PORT 8080
    
 int main(int argc, char const *argv[])
 {
@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
     serv_addr.sin_port = htons(PORT);
        
     // Convert IPv4 and IPv6 addresses from text to binary form
-    if(inet_pton(AF_INET, "88.241.246.74", &serv_addr.sin_addr)<=0) 
+    if(inet_pton(AF_INET, "10.0.2.15", &serv_addr.sin_addr)<=0) 
     {
         printf("\nInvalid address/ Address not supported \n");
         return -1;

@@ -5,11 +5,37 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <iostream>
+#include <pthread.h>
 
-#define PORT 9999
+#define PORT 8080
+
+
+class client{
+	public:
+	std::string name;
+	pthread_t newT;
+	int socket;
+	};
+
+
+void * handleClient(void * new_socket){
+	int vRead;
+	int socket =*((int *)new_socket);
+	char rBuffer[1024]={0};
+	
+	while(1){
+		vRead = read(socket,rBuffer,1024);
+		printf("new message: %s\n",rBuffer);
+		}
+	
+	return NULL;
+	}
 
 int main(int argc, char const *argv[])
 {
+	client clients[20];
+	pthread_t t[20];
     int server_fd, new_socket, valread;
     struct sockaddr_in address;
     int opt = 1;
@@ -46,15 +72,35 @@ int main(int argc, char const *argv[])
         perror("listen");
         exit(EXIT_FAILURE);
     }
-    if ((new_socket = accept(server_fd, (struct sockaddr *)&address, 
-                       (socklen_t*)&addrlen))<0)
-    {
-        perror("accept");
-        exit(EXIT_FAILURE);
-    }
+    
+    int i=0;
+    
     while(1){
-    valread = read( new_socket , buffer, 1024);
-    printf("A new message has claimed : %s\n",buffer );
-    }
+      if ((new_socket = accept(server_fd, (struct sockaddr *)&address, 
+                       (socklen_t*)&addrlen))<0)
+      {
+          perror("accept");
+          exit(EXIT_FAILURE);
+      }
+            
+      send(new_socket, "name" , strlen("name") , 0 );
+      valread = read(new_socket,buffer,1024);
+      std::string name = buffer;
+      
+      
+      printf("a new client: %s",buffer);
+      
+      clients[i].name = name;
+      clients[i].socket=new_socket;
+      clients[i].newT=t[i];
+      
+      if(pthread_create(&t[i],NULL, handleClient,&new_socket)!=0){
+		  printf("failed to create thread");
+		  }
+      
+      
+     
+    }  
+      
     
 }
