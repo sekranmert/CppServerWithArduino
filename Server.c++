@@ -8,7 +8,7 @@
 #include <iostream>
 #include <pthread.h>
 
-#define PORT 8080
+#define PORT 9999
 
 
 class client{
