@@ -140,7 +140,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
     address.sin_family = AF_INET;
-    address.sin_addr.s_addr = inet_addr("10.0.2.15");//127.0.0.1 local host
+    address.sin_addr.s_addr = inet_addr("172.31.45.192");//127.0.0.1 local host
     address.sin_port = htons( PORT );
        
     // bind to 9999
