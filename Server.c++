@@ -7,38 +7,121 @@
 #include <arpa/inet.h>
 #include <iostream>
 #include <pthread.h>
+using namespace std;
 
-#define PORT 8080
+#define PORT 9999
 
 
 class client{
 	public:
-	std::string name;
+	string name;
 	pthread_t newT;
 	int socket;
 	};
+	
+client clients[20];
 
 
-void * handleClient(void * new_socket){
+void listClient(){
+	
+	for(int i=0;i<20;i++){
+	        
+		    cout << i << ": " << clients[i].name<<"\n";
+		    
+		    if(clients[i+1].name == ""){
+				break;
+			}
+	   	}
+	}
+void closeAll(){
+	
+	for(int i=0;i<20;i++){
+		
+	        send(clients[i].socket , "close" , strlen("close") , 0 );
+	        pthread_cancel(clients[i].newT);
+	        close(clients[i].socket);
+		    if(clients[i+1].name == ""){
+				break;
+				exit(0);
+			}
+	   	}
+	
+	}
+
+int closeClient(string Args){
+	string name = Args;
+	for(int i=0;i<20;i++){
+		
+		if(clients[i].name==name){
+			send(clients[i].socket , "close" , strlen("close") , 0 );
+	        pthread_cancel(clients[i].newT);
+	        close(clients[i].socket);
+			return 1;
+			
+	   	}
+	
+	}
+	return 0;
+}
+
+
+void * handleInput(void * Args){
+	
+	string input;
+	
+	while(1){
+      
+      getline(cin,input);
+      
+	  if(input=="list"){
+      listClient();	
+	  }
+	  if(input=="closeall"){
+      closeAll();	
+	  }
+	  string dummy= input;
+	  string token= dummy.substr(0,5);
+	  string name= dummy.substr(6); 
+	  if(token=="close"){
+		 
+         int a = closeClient(name);
+         if(a){
+			 cout<<"Client "<< name << " is closed\n"; 
+			 }
+		 else{
+			 cout<<"No client as "<< name << "\n";
+			 }	
+	  }
+	  
+      //handle code
+    }
+	
+	return NULL;
+}
+void * handleClient(void * Args){
+	
 	int vRead;
-	int socket =*((int *)new_socket);
+	client newClient =*((client *)Args);
 	char rBuffer[1024]={0};
 	
 	while(1){
-		vRead = read(socket,rBuffer,1024);
-		printf("new message: %s\n",rBuffer);
-		}
+		memset(rBuffer,0,1024);
+		vRead = read(newClient.socket,rBuffer,1024);
+		cout<<"new message from "<<newClient.name<<" :" << rBuffer <<"\n";
+	    cout.flush();
+	    
+	}
 	
 	return NULL;
-	}
+}
 
 int main(int argc, char const *argv[])
 {
-	client clients[20];
-	pthread_t t[20];
+	
+	pthread_t t0;
     int server_fd, new_socket, valread;
     struct sockaddr_in address;
-    int opt = 1;
+    int opt=1;
     int addrlen = sizeof(address);
     char buffer[1024] = {0};
        
@@ -73,34 +156,44 @@ int main(int argc, char const *argv[])
         exit(EXIT_FAILURE);
     }
     
-    int i=0;
+    int a=0;
+    
+    if(pthread_create(&t0,NULL, handleInput,&clients)!=0){
+		
+		  cout<<"failed to create thread";
+		  cout.flush();  
+		    
+      }  
     
     while(1){
-      if ((new_socket = accept(server_fd, (struct sockaddr *)&address, 
-                       (socklen_t*)&addrlen))<0)
+		
+      if ((new_socket = accept(server_fd, (struct sockaddr *)&address,(socklen_t*)&addrlen))<0)
       {
           perror("accept");
           exit(EXIT_FAILURE);
       }
-            
-      send(new_socket, "name" , strlen("name") , 0 );
+      memset(buffer,0,1024);      
       valread = read(new_socket,buffer,1024);
-      std::string name = buffer;
+      string name = buffer;
       
       
-      printf("a new client: %s",buffer);
+      cout<<"a new client: "<<buffer<<"\n";
+      cout.flush();
       
-      clients[i].name = name;
-      clients[i].socket=new_socket;
-      clients[i].newT=t[i];
-      
-      if(pthread_create(&t[i],NULL, handleClient,&new_socket)!=0){
-		  printf("failed to create thread");
-		  }
+      clients[a].name = name;
+      clients[a].socket=new_socket;
       
       
-     
-    }  
+      if(pthread_create(&clients[a].newT,NULL, handleClient,&clients[a])!=0){
+		  cout<<"failed to create thread";
+		  cout.flush();
+		  } 
+	  a++;
+	  if(a==20){
+		  cout<<"client overflow\n";
+		  }  
+     }  
+}
       
     
-}
+
