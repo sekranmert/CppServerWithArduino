@@ -210,9 +210,11 @@ void * handleClient(void * Args){
 	    
       if(command=="ardu"){
         check = sendArdu(message,newClient);
+        send(newClient.socket , "sending message to ardu" , strlen("sending message to ardu") , 0 );
       }
 	  if(command=="clnt"){
 	    check = sendClient(message,newClient);
+        send(newClient.socket , "sending message to client" , strlen("sending message to client") , 0 );
 	  }
 	  if(command=="list"){
 	    string listString ; 
@@ -220,9 +222,10 @@ void * handleClient(void * Args){
 	    char* charList = &listString[0];
 	    send(newClient.socket , charList , strlen(charList) , 0 );			
 	    memset(charList,0,strlen(charList));
+	    check = 1;
 	  }
 	  if (check==0){
-	    send(newClient.socket , "no such command" , strlen("no such command") , 0 );	
+	    send(newClient.socket , "error" , strlen("error") , 0 );	
 	  }
 	
     }
