@@ -203,28 +203,30 @@ void * handleClient(void * Args){
 	    
     input = rBuffer;
     int check=0;
-	    
-    command = input.substr(0,3);
-    message = input.substr(5);
-	    
-    if(command=="ardu"){
-      check = sendArdu(message,newClient);
-    }
-	if(command=="clnt"){
-	  check = sendClient(message,newClient);
-	}
-	if(command=="list"){
-	  string listString ; 
-	  listString = listStr();
-	  char* charList = &listString[0];
-	  send(newClient.socket , charList , strlen(charList) , 0 );			
-	  memset(charList,0,strlen(charList));
-	}
-	if (check==0){
-	  send(newClient.socket , "no such command" , strlen("no such command") , 0 );	
-	}
 	
-  }
+	if(input.length()>5){     
+      command = input.substr(0,3);
+      message = input.substr(5);
+	    
+      if(command=="ardu"){
+        check = sendArdu(message,newClient);
+      }
+	  if(command=="clnt"){
+	    check = sendClient(message,newClient);
+	  }
+	  if(command=="list"){
+	    string listString ; 
+	    listString = listStr();
+	    char* charList = &listString[0];
+	    send(newClient.socket , charList , strlen(charList) , 0 );			
+	    memset(charList,0,strlen(charList));
+	  }
+	  if (check==0){
+	    send(newClient.socket , "no such command" , strlen("no such command") , 0 );	
+	  }
+	
+    }
+  }  
   return NULL;
 }
 
