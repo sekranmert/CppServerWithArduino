@@ -203,10 +203,11 @@ void * handleClient(void * Args){
 	    
     input = rBuffer;
     int check=0;
-	
+	cout<<input;
 	if(input.length()>5){     
       command = input.substr(0,3);
       message = input.substr(5);
+      cout<<command;
 	    
       if(command=="ardu"){
         check = sendArdu(message,newClient);
