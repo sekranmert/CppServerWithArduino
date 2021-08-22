@@ -182,6 +182,8 @@ void loop() {
       lcd.print("   No Message   ");
       lcd.setCursor(0,1);
       lcd.print("                ");
+      Ri=-1;
+      Rii=-1;
     }
     else if (buffer[0]==101){
       for(int i = 5;i>0;i--);
