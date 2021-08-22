@@ -139,26 +139,20 @@ void loop() {
         }
       }
     else if (buffer[0]==99){
+      String stat="";
       if (digitalRead(9)== HIGH){
-        Serial.println("led 1 set high");
-        client.write("led 1 set high");
+        stat+="led 1 set high\n";
       }
       else if(digitalRead(9)== LOW){
-        Serial.println("led 1 set low");
-        client.write("led 1 set low");
+        stat+="led 1 set low\n";
       }
       if (digitalRead(11)== HIGH){
-        Serial.println("led 2 set high");
-        client.write("led 2 set high");
+        stat+="led 2 set highn\n";
       }
       else if(digitalRead(11)== LOW){
-        Serial.println("led 2 set low");
-        client.write("led 2 set low");
+        stat+="led 2 set low\n";
       }
-      else{
-        Serial.println("ERROR");
-        client.write("ERROR");
-        }
+      client.write(stat);
     }
     else if (buffer[0]==100){
       lcd.setCursor(0,0);

@@ -101,21 +101,30 @@ int sendArdu(string message,client newClient){
   
   for (int i=0; i<20; i++){
 	if(clients[i].name=="Arduino"){
+	  memset(rBuffer,0,1024);
 	  if(message == "led 1 on"){
 		send(clients[i].socket , "aa" , strlen("aa") , 0 );
-		return 1;
+		vRead = read(clients[i].socket,rBuffer,1024);
+		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
+	    return 1;
       }
       if(message == "led 1 off"){
 		send(clients[i].socket , "ab" , strlen("ab") , 0 );		  
-        return 1;
+        vRead = read(clients[i].socket,rBuffer,1024);
+		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
+	    return 1;
       }
       if(message == "led 2 on"){
 		send(clients[i].socket , "ba" , strlen("ba") , 0 );
-        return 1;
+        vRead = read(clients[i].socket,rBuffer,1024);
+		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
+	    return 1;
       }
       if(message == "led 2 off"){
 		send(clients[i].socket , "bb" , strlen("bb") , 0 );		  
-        return 1;
+        vRead = read(clients[i].socket,rBuffer,1024);
+		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
+	    return 1;
       }
       if(message == "buzzer on"){
 		send(clients[i].socket , "e" , strlen("e") , 0 );
