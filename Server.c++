@@ -203,11 +203,10 @@ void * handleClient(void * Args){
 	    
     input = rBuffer;
     int check=0;
-	cout<<input;
+	cout.flush();
 	if(input.length()>5){     
-      command = input.substr(0,3);
+      command = input.substr(0,4);
       message = input.substr(5);
-      cout<<command;
 	    
       if(command=="ardu"){
         check = sendArdu(message,newClient);
@@ -254,7 +253,7 @@ int main(int argc, char const *argv[])
     exit(EXIT_FAILURE);
   }
   address.sin_family = AF_INET;
-  address.sin_addr.s_addr = inet_addr("172.31.45.192");//127.0.0.1 local host
+  address.sin_addr.s_addr = inet_addr("127.0.0.1");//127.0.0.1 local host 172.31.45.192
   address.sin_port = htons( PORT );
        
   // bind to 9999
