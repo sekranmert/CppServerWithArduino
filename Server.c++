@@ -223,8 +223,9 @@ void * handleClient(void * Args){
 	if (check==0){
 	  send(newClient.socket , "no such command" , strlen("no such command") , 0 );	
 	}
-	return NULL;
+	
   }
+  return NULL;
 }
 
 
