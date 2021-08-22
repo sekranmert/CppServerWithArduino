@@ -152,7 +152,7 @@ void loop() {
       else if(digitalRead(11)== LOW){
         stat+="led 2 set low\n";
       }
-      client.write(stat);
+      client.println(stat);
     }
     else if (buffer[0]==100){
       lcd.setCursor(0,0);
