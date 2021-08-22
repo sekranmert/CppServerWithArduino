@@ -100,7 +100,7 @@ int sendArdu(string message,client newClient){
   char rBuffer[1024];
   
   for (int i=0; i<20; i++){
-	if(clients[i].name=="Arduino"){
+	if(clients[i].name=="arduino"){
 	  memset(rBuffer,0,1024);
 	  if(message == "led 1 on"){
 		send(clients[i].socket , "aa" , strlen("aa") , 0 );
