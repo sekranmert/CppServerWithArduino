@@ -96,7 +96,9 @@ int sendArdu(string message,client newClient){
   int a = token.length();
   int vRead;
   string newMessage = "message: "+ message.substr(a);
-  char* buffer = &newMessage[0];
+  char* buffer;
+  memset(buffer,0,1024);
+  *buffer = &newMessage[0];
   char rBuffer[1024];
   
   for (int i=0; i<20; i++){
