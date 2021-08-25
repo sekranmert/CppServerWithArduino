@@ -104,7 +104,11 @@ int sendArdu(string message,client newClient){
   for (int i=0; i<20; i++){
 	if(clients[i].name=="arduino"){
 	  memset(rBuffer,0,1024);
+<<<<<<< HEAD
 	  
+=======
+	  cout<< message;
+>>>>>>> 11fae7017e9ad2269e890628473721a49767e5b5
 	  if(message == "led 1 on"){
 		send(clients[i].socket , "a" , strlen("a") , 0 );	  
 	    return 1;
@@ -132,7 +136,7 @@ int sendArdu(string message,client newClient){
 	    return 1;
 	  }
       if(token == "lcd"){
-		send(clients[i].socket , buffer , 100 , 0 );  	  
+		send(clients[i].socket , buffer , strlen(buffer) , 0 );  	  
         return 1;
       }  
     }
