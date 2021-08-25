@@ -93,9 +93,9 @@ int sendArdu(string message,client newClient){
   
   string token;
   getline(ss,token,' ');
-  int a = token.length()-1;
+  int a = token.length();
   int vRead;
-  string newMessage = "d"+message.substr(a);
+  string newMessage = "message: "+ message.substr(a);
   char* buffer = &newMessage[0];
   char rBuffer[1024];
   
@@ -103,41 +103,41 @@ int sendArdu(string message,client newClient){
 	if(clients[i].name=="arduino"){
 	  memset(rBuffer,0,1024);
 	  if(message == "led 1 on"){
-		send(clients[i].socket , "aa" , strlen("aa") , 0 );
+		send(clients[i].socket , "a" , strlen("a") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
       }
       if(message == "led 1 off"){
-		send(clients[i].socket , "ab" , strlen("ab") , 0 );		  
+		send(clients[i].socket , "b" , strlen("b") , 0 );		  
         vRead = read(clients[i].socket,rBuffer,1024);
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
       }
       if(message == "led 2 on"){
-		send(clients[i].socket , "ba" , strlen("ba") , 0 );
+		send(clients[i].socket , "c" , strlen("c") , 0 );
         vRead = read(clients[i].socket,rBuffer,1024);
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
       }
       if(message == "led 2 off"){
-		send(clients[i].socket , "bb" , strlen("bb") , 0 );		  
+		send(clients[i].socket , "d" , strlen("d") , 0 );		  
         vRead = read(clients[i].socket,rBuffer,1024);
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
       }
       if(message == "buzzer on"){
-		send(clients[i].socket , "e" , strlen("e") , 0 );
+		send(clients[i].socket , "f" , strlen("f") , 0 );
         return 1;
       }
       if(message == "led status"){
-		send(clients[i].socket , "c" , strlen("c") , 0 );
+		send(clients[i].socket , "e" , strlen("e") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
 	  }
       if(token == "lcd"){
-		send(clients[i].socket , buffer , strlen(buffer) , 0 );  	  
+		send(clients[i].socket , buffer , 100 , 0 );  	  
         return 1;
       }  
     }
@@ -224,6 +224,9 @@ void * handleClient(void * Args){
 	    memset(charList,0,strlen(charList));
 	    check = 1;
 	  }
+	  if(command=="exit"){
+		closeClient(newClient.name);  
+	  }
 	  if (check==0){
 	    send(newClient.socket , "error" , strlen("error") , 0 );	
 	  }
@@ -256,7 +259,7 @@ int main(int argc, char const *argv[])
     exit(EXIT_FAILURE);
   }
   address.sin_family = AF_INET;
-  address.sin_addr.s_addr = inet_addr("172.31.45.192");//127.0.0.1 local host 172.31.45.192
+  address.sin_addr.s_addr = inet_addr("127.0.0.1");//127.0.0.1 local host 172.31.45.192
   address.sin_port = htons( PORT );
        
   // bind to 9999
