@@ -138,7 +138,7 @@ int sendArdu(string message,client newClient){
 	    return 1;
 	  }
       if(token == "lcd"){
-		send(clients[i].socket , buffer , 100 , 0 );  	  
+		send(clients[i].socket , buffer , strlen(buffer) , 0 );  	  
         return 1;
       }  
     }
