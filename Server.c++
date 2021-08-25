@@ -102,6 +102,7 @@ int sendArdu(string message,client newClient){
   for (int i=0; i<20; i++){
 	if(clients[i].name=="arduino"){
 	  memset(rBuffer,0,1024);
+	  cout<< message;
 	  if(message == "led 1 on"){
 		send(clients[i].socket , "a" , strlen("a") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
