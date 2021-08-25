@@ -104,39 +104,35 @@ int sendArdu(string message,client newClient){
   for (int i=0; i<20; i++){
 	if(clients[i].name=="arduino"){
 	  memset(rBuffer,0,1024);
-<<<<<<< HEAD
 	  
-=======
-	  cout<< message;
->>>>>>> 11fae7017e9ad2269e890628473721a49767e5b5
 	  if(message == "led 1 on"){
 		send(clients[i].socket , "a" , strlen("a") , 0 );	  
 	    return 1;
       }
-      if(message == "led 1 off"){
+      else if(message == "led 1 off"){
 		send(clients[i].socket , "b" , strlen("b") , 0 );		  	  
 	    return 1;
       }
-      if(message == "led 2 on"){
+      else if(message == "led 2 on"){
 		send(clients[i].socket , "c" , strlen("c") , 0 );	  
 	    return 1;
       }
-      if(message == "led 2 off"){
+      else if(message == "led 2 off"){
 		send(clients[i].socket , "d" , strlen("d") , 0 );		  	  
 	    return 1;
       }
-      if(message == "buzzer on"){
+      else if(message == "buzzer on"){
 		send(clients[i].socket , "f" , strlen("f") , 0 );
         return 1;
       }
-      if(message == "led status"){
+      else if(message == "led status"){
 		send(clients[i].socket , "e" , strlen("e") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
 	  }
-      if(token == "lcd"){
-		send(clients[i].socket , buffer , strlen(buffer) , 0 );  	  
+      else if(token == "lcd"){
+		send(clients[i].socket , buffer , 100 , 0 );  	  
         return 1;
       }  
     }
@@ -151,27 +147,30 @@ void * handleInput(void * Args){
   while(1){
       
     getline(cin,input);
+    
       
     if(input=="list"){
       listClient();	
 	}
-    if(input=="closeall"){
+    else if(input=="closeall"){
       closeAll();	
 	}
-	string dummy= input;
-	string token= dummy.substr(0,5);
-	string name= dummy.substr(6); 
-	if(token=="close"){
+	else if(input.length()>6){ 
+	  string dummy= input;
+	  string token= dummy.substr(0,5);
+	  string name= dummy.substr(6); 
+	  if(token=="close"){
 		 
-      int a = closeClient(name);
-      if(a){
-		cout<<"Client "<< name << " is closed\n"; 
+        int a = closeClient(name);
+        if(a){
+		  cout<<"Client "<< name << " is closed\n"; 
+	    }
+	    else{
+		  cout<<"No client as "<< name << "\n";
+	    }	
 	  }
-	  else{
-		cout<<"No client as "<< name << "\n";
-	  }	
-	}
-  }
+    }
+  }  
   return NULL;
 }
 
@@ -211,11 +210,11 @@ void * handleClient(void * Args){
         check = sendArdu(message,newClient);
         send(newClient.socket , "sending message to ardu" , strlen("sending message to ardu") , 0 );
       }
-	  if(command=="clnt"){
+	  else if(command=="clnt"){
 	    check = sendClient(message,newClient);
         send(newClient.socket , "sending message to client" , strlen("sending message to client") , 0 );
 	  }
-	  if(command=="list"){
+	  else if(command=="list"){
 	    string listString ; 
 	    listString = listStr();
 	    char* charList = &listString[0];
@@ -223,7 +222,7 @@ void * handleClient(void * Args){
 	    memset(charList,0,strlen(charList));
 	    check = 1;
 	  }
-	  if(command=="exit"){
+	  else if(command=="exit"){
 		closeClient(newClient.name);  
 	  }
 	  if (check==0){
@@ -293,7 +292,7 @@ int main(int argc, char const *argv[])
 		  a = i;
 		  break;
 		}
-	    send(new_socket , "Sorry,Server Full" , strlen("Sorry,Server Full") , 0 );
+	    send(new_socket , "Sorry, Server Full" , strlen("Sorry, Server Full") , 0 );
 	    send(new_socket , "close" , strlen("close") , 0 );
 	    close(new_socket);
 	  }
