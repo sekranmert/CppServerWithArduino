@@ -1,4 +1,4 @@
-i #include <Ethernet.h>
+#include <Ethernet.h>
 #include <LiquidCrystal.h>
 #include <dht11.h>
 #include<Servo.h>
