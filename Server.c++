@@ -113,24 +113,44 @@ int sendArdu(string message,client newClient){
 		send(clients[i].socket , "b" , strlen("b") , 0 );		  	  
 	    return 1;
       }
-      else if(message == "led 2 on"){
-		send(clients[i].socket , "c" , strlen("c") , 0 );	  
-	    return 1;
-      }
-      else if(message == "led 2 off"){
-		send(clients[i].socket , "d" , strlen("d") , 0 );		  	  
-	    return 1;
-      }
-      else if(message == "buzzer on"){
-		send(clients[i].socket , "f" , strlen("f") , 0 );
-        return 1;
-      }
       else if(message == "led status"){
-		send(clients[i].socket , "e" , strlen("e") , 0 );
+		send(clients[i].socket , "c" , strlen("c") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
 	  }
+
+      else if(message == "buzzer on"){
+		send(clients[i].socket , "d" , strlen("d") , 0 );
+        return 1;
+      }
+      
+      else if(message == "temp"){
+		send(clients[i].socket , "e" , strlen("e") , 0 );
+		vRead = read(clients[i].socket,rBuffer,1024);
+		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );	
+        return 1;
+      }
+      
+      else if(message == "humd"){
+		send(clients[i].socket , "f" , strlen("f") , 0 );
+		vRead = read(clients[i].socket,rBuffer,1024);
+		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );	
+        return 1;
+      }
+      else if(message == "servo 0"){
+		send(clients[i].socket , "g" , strlen("g") , 0 );
+        return 1;
+      }
+      else if(message == "servo 90"){
+		send(clients[i].socket , "h" , strlen("h") , 0 );
+        return 1;
+      }
+      else if(message == "servo 180"){
+		send(clients[i].socket , "i" , strlen("i") , 0 );
+        return 1;
+      }
+
       else if(token == "lcd"){
 		send(clients[i].socket , buffer , 100 , 0 );  	  
         return 1;
