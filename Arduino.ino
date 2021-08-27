@@ -1,10 +1,12 @@
- #include <Ethernet.h>
+i #include <Ethernet.h>
 #include <LiquidCrystal.h>
+#include <dht11.h>
+#include<Servo.h>
 
 //Mac adress for ethernet shield this one is default for Wiznet W5100
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 int port = 9999; 
-IPAddress server(13,59,27,29);  // Publıc IP of the server,
+IPAddress server(18,222,238,86);  // Publıc IP of the server,
 
 //ip is static IP address for shield, mydns is the default IP of dns  
 IPAddress ip(192, 168, 0, 177);
@@ -16,16 +18,21 @@ EthernetClient client;
 //create lcd object
 LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
 
+//creat dht11 sensor object
+dht11 dht_sensor;
+Servo sg90;
+
 int Li          = 16;
 int Lii         = 0;
 
 void setup() {//this setup part is from webclient aplication example of ethernet library https://github.com/arduino-libraries/Ethernet
   lcd.begin(16, 2);
   pinMode(8, OUTPUT);
-  pinMode(9, OUTPUT);
-  pinMode(10, INPUT);
+  pinMode(9, INPUT);
+  pinMode(10, OUTPUT);
   pinMode(11, INPUT);
   pinMode(12,OUTPUT);
+  digitalWrite(10, LOW);
 
   Serial.begin(9600);//Serial port is used for debugging and to see recieved data after debug not necessary
   while (!Serial) {
@@ -72,6 +79,7 @@ void setup() {//this setup part is from webclient aplication example of ethernet
 }
 
 void loop() {
+   digitalWrite(10, LOW);
   // if there are incoming bytes available
   // from the server, read them and print them:
   int len = client.available();
@@ -107,47 +115,61 @@ void loop() {
       Li=16;
       Lii=0;
     }
-    // if messsage has 1 char "a" then set led 1 on
+    // if messsage has 1 char "a" then set led on
     else if (buffer[0]==97){
       digitalWrite(8, HIGH);      
     }
-    // if messsage has 1 char "b" then set led 1 off
+    // if messsage has 1 char "b" then set led off
     else if(buffer[0]==98){
       digitalWrite(8, LOW); 
     }
-    // if messsage has 1 char "b" then set led 2 on
+    // if messsage has 1 char "c" then send led status
     else if (buffer[0]==99){
-      digitalWrite(9, HIGH); 
-    }
-    // if messsage has 1 char "d" then set led 2 off
-    else if(buffer[0]==100){
-      digitalWrite(9, LOW); 
-    }
-    // if messsage has 1 char "e" then send led status
-    else if (buffer[0]==101){
       String stat="";
-      if (digitalRead(10)== HIGH){
+      if (digitalRead(9)== HIGH){
         stat+="led 1 set high\n";
       }
-      else if(digitalRead(10)== LOW){
+      else if(digitalRead(9)== LOW){
         stat+="led 1 set low\n";
-      }
-      if (digitalRead(11)== HIGH){
-        stat+="led 2 set high\n";
-      }
-      else if(digitalRead(11)== LOW){
-        stat+="led 2 set low\n";
       }
       client.println(stat);
     }
-    // if messsage has 1 char "f" then set buzzer on
-    else if (buffer[0]==102){
-      for(int i = 5;i>0;i--);
-        digitalWrite(12, HIGH);
+    // if messsage has 1 char "d" then set buzzer on
+    else if (buffer[0]==100){
+      for(int i = 5;i>0;i--){
+        digitalWrite(10, HIGH);
         delay(100);
-        digitalWrite(12, LOW);
+        digitalWrite(10, LOW);
         delay(100);
       }
+    }
+    // if messsage has 1 char "e" then send tempature
+    else if (buffer[0]==101){
+      float temp =((float)dht_sensor.temperature,11);
+      String tempStr="";
+      tempStr.concat(temp);
+      client.println(tempStr);
+    }
+    // if messsage has 1 char "f" then send humidity
+    else if (buffer[0]==102){
+      float humd =((float)dht_sensor.humidity,11);
+      String humdStr="";
+      humdStr.concat(humd);
+      client.println(humdStr);       
+    }
+    //if messsage has 1 char "g" then set servo 0
+    else if (buffer[0]==103){
+      sg90.write(0);
+    }
+    //if messsage has 1 char "h" then set servo 90
+    else if (buffer[0]==104){
+      sg90.write(90);
+    }
+    //if messsage has 1 char "i" then set servo 180
+    else if (buffer[0]==105){
+      sg90.write(180);
+    }
+    
     else{
       Serial.println("command not found");
     }
