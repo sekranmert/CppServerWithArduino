@@ -329,12 +329,12 @@ int main(int argc, char const *argv[])
     clients[a].name = name;
     clients[a].socket=new_socket;
       
-      
-    if(pthread_create(&clients[a].newT,NULL, handleClient,&clients[a])!=0){
+    if(clients[a].name !="arduino"){  
+      if(pthread_create(&clients[a].newT,NULL, handleClient,&clients[a])!=0){
 	  cout<<"failed to create thread";
 	  cout.flush();
-	} 
-	a++;
+      } 
+      a++;
+    } 
   } 
-   
 }
