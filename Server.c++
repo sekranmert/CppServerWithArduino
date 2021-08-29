@@ -204,7 +204,10 @@ void * handleInput(void * Args){
 string listStr(){
   string list="";
   for(int i=0;i<20;i++){
-    list+=clients[i].name+"\n";
+    list+=i+"."+clients[i].name+"\n"; 
+    if (clients[i].name==""){
+    break;
+    }
   }
   return list;
 }
@@ -227,9 +230,9 @@ void * handleClient(void * Args){
 	    
     input = rBuffer;
     int check=0;
-	cout.flush();
-	if(input.length()>5){     
-      command = input.substr(0,4);
+	     
+    command = input.substr(0,4);
+    if(input.length()>5){
       message = input.substr(5);
 	    
       if(command=="ardu"){
@@ -244,6 +247,7 @@ void * handleClient(void * Args){
         send(newClient.socket , "sending message to client" , strlen("sending message to client") , 0 );
         check = 1;
 	  }
+    }
 	  else if(command=="list"){
 	    string listString ; 
 	    listString = listStr();
@@ -262,7 +266,7 @@ void * handleClient(void * Args){
 	    send(newClient.socket , "error" , strlen("error") , 0 );	
 	  }
 	
-    }
+    
   }  
   return NULL;
 }
