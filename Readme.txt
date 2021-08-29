@@ -1,6 +1,8 @@
 from Sekranmert 2021
 
 Cpp Server With Arduino
+ 
+   For Demo Video https://drive.google.com/drive/folders/1BedYchUlZWaEkna39FEsTRRAQ4z2EOX4?usp=sharing
 
    This project controls an arduino with a c++ server and client. Client.c++ and Server.c++ are written on ubuntu and compiled with gnu. they both use socket.h and pthread.h libraries.
 
