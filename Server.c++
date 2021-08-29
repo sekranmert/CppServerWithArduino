@@ -91,7 +91,7 @@ int sendClient(string message,client newClient){
 
 int sendArdu(string message,client newClient){
   stringstream ss(message);
-  cout << "sending message to arduino";
+  cout << "sending message to arduino\n";
   cout.flush();
   string token;
   getline(ss,token,' ');
@@ -99,13 +99,12 @@ int sendArdu(string message,client newClient){
   int vRead;
   string newMessage = "message: "+ message.substr(a);
   char* buffer;
-  memset(buffer,0,1024);
   buffer = &newMessage[0];
   char rBuffer[1024];
   
   for (int i=0; i<20; i++){
 	if(clients[i].name=="arduino"){
-          cout << "found arduino. sending...";
+      cout << "found arduino. sending...\n";
 	  cout.flush();
 	  memset(rBuffer,0,1024);
 	  
@@ -205,7 +204,7 @@ void * handleInput(void * Args){
 string listStr(){
   string list="";
   for(int i=0;i<20;i++){
-  list+=i+"."+clients[i].name+"\n";
+    list+=i+"."+clients[i].name+"\n";
   }
   return list;
 }
@@ -236,21 +235,24 @@ void * handleClient(void * Args){
       if(command=="ardu"){
         check = sendArdu(message,newClient);
         send(newClient.socket , "sending message to ardu" , strlen("sending message to ardu") , 0 );
+        check = 1;
       }
 	  else if(command=="clnt"){
 	    check = sendClient(message,newClient);
         send(newClient.socket , "sending message to client" , strlen("sending message to client") , 0 );
+        check = 1;
 	  }
 	  else if(command=="list"){
 	    string listString ; 
 	    listString = listStr();
 	    char* charList = &listString[0];
 	    send(newClient.socket , charList , strlen(charList) , 0 );			
-	    memset(charList,0,strlen(charList));
 	    check = 1;
 	  }
 	  else if(command=="exit"){
-		closeClient(newClient.name);  
+		close(newClient.socket);
+		newClient.name="";
+		pthread_cancel(newClient.newT);  
 	  }
 	  if (check==0){
 	    send(newClient.socket , "error" , strlen("error") , 0 );	
