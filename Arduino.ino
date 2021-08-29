@@ -6,7 +6,7 @@
 //Mac adress for ethernet shield this one is default for Wiznet W5100
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 int port = 9999; 
-IPAddress server(18,222,238,86);  // Publıc IP of the server,
+IPAddress server(18,221,8,22);  // Publıc IP of the server,
 
 //ip is static IP address for shield, mydns is the default IP of dns  
 IPAddress ip(192, 168, 0, 177);
@@ -14,7 +14,7 @@ IPAddress myDns(192, 168, 0, 1);
 
 //create Ethernet client object to use client library
 EthernetClient client;
-
+int DhtPin=12; 
 //create lcd object
 LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
 
@@ -27,11 +27,10 @@ int Lii         = 0;
 
 void setup() {//this setup part is from webclient aplication example of ethernet library https://github.com/arduino-libraries/Ethernet
   lcd.begin(16, 2);
+  sg90.attach(11);
   pinMode(8, OUTPUT);
   pinMode(9, INPUT);
   pinMode(10, OUTPUT);
-  pinMode(11, INPUT);
-  pinMode(12,OUTPUT);
   digitalWrite(10, LOW);
 
   Serial.begin(9600);//Serial port is used for debugging and to see recieved data after debug not necessary
@@ -145,17 +144,23 @@ void loop() {
     }
     // if messsage has 1 char "e" then send tempature
     else if (buffer[0]==101){
-      float temp =((float)dht_sensor.temperature,11);
+      int chk = dht_sensor.read(DhtPin);
+      float temp =((float)dht_sensor.temperature);
       String tempStr="";
+      String reply="";
       tempStr.concat(temp);
-      client.println(tempStr);
+      reply+="Temperature: "+ tempStr;
+      client.println(reply);
     }
     // if messsage has 1 char "f" then send humidity
     else if (buffer[0]==102){
-      float humd =((float)dht_sensor.humidity,11);
+      int chk = dht_sensor.read(DhtPin);
+      float humd =((float)dht_sensor.humidity);
       String humdStr="";
+      String reply="";
       humdStr.concat(humd);
-      client.println(humdStr);       
+      reply+= "Humidity: "+ humdStr ;
+      client.println(reply);       
     }
     //if messsage has 1 char "g" then set servo 0
     else if (buffer[0]==103){
