@@ -29,6 +29,7 @@ void listClient(){
   for(int i=0;i<20;i++){
 	        
     cout << i << ": " << clients[i].name<<"\n";
+    cout.flush();
 		    
 	if(clients[i+1].name == ""){
 	  break;
@@ -90,7 +91,8 @@ int sendClient(string message,client newClient){
 
 int sendArdu(string message,client newClient){
   stringstream ss(message);
-  
+  cout << "sending message to arduino";
+  cout.flush();
   string token;
   getline(ss,token,' ');
   int a = token.length();
@@ -103,6 +105,8 @@ int sendArdu(string message,client newClient){
   
   for (int i=0; i<20; i++){
 	if(clients[i].name=="arduino"){
+          cout << "found arduino. sending...";
+	  cout.flush();
 	  memset(rBuffer,0,1024);
 	  
 	  if(message == "led 1 on"){
