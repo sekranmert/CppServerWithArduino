@@ -74,7 +74,7 @@ int sendClient(string message,client newClient){
   
   string reciever;
   getline(ss,reciever,' ');
-  int a = reciever.length()-1;
+  int a = reciever.length();
   string newMessage = newClient.name +" says :"+message.substr(a);
   char* buffer = &newMessage[0];
   for (int i=0; i<20; i++){
