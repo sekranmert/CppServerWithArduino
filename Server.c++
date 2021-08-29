@@ -246,6 +246,8 @@ void * handleClient(void * Args){
 	    string listString ; 
 	    listString = listStr();
 	    char* charList = &listString[0];
+	    cout << charList<<"\n";
+            cout.flush();
 	    send(newClient.socket , charList , listString.length() , 0 );			
 	    check = 1;
 	  }
