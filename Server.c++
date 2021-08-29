@@ -246,7 +246,7 @@ void * handleClient(void * Args){
 	    string listString ; 
 	    listString = listStr();
 	    char* charList = &listString[0];
-	    send(newClient.socket , charList , strlen(charList) , 0 );			
+	    send(newClient.socket , charList , listString.length() , 0 );			
 	    check = 1;
 	  }
 	  else if(command=="exit"){
