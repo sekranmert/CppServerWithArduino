@@ -1,3 +1,6 @@
+/*written by Sekranmert
+*/
+
 #include <Ethernet.h>
 #include <LiquidCrystal.h>
 #include <dht11.h>
@@ -14,12 +17,17 @@ IPAddress myDns(192, 168, 0, 1);
 
 //create Ethernet client object to use client library
 EthernetClient client;
+
+//dht11 is connected to 2nd pin
 int DhtPin=2; 
+
 //create lcd object
 LiquidCrystal lcd = LiquidCrystal(24, 3, 4, 5, 6, 7);
 
 //creat dht11 sensor object
 dht11 dht_sensor;
+
+//create a sg90 servo object
 Servo sg90;
 
 int Li          = 16;
@@ -28,9 +36,9 @@ int Lii         = 0;
 void setup() {//this setup part is from webclient aplication example of ethernet library https://github.com/arduino-libraries/Ethernet
   lcd.begin(16, 2);
   
-  pinMode(8, OUTPUT);
-  pinMode(22, OUTPUT);
-  pinMode(23, INPUT);
+  pinMode(8, OUTPUT);// led 
+  pinMode(22, OUTPUT);// buzzer
+  pinMode(23, INPUT);// led status
   
   Serial.begin(9600);//Serial port is used for debugging and to see recieved data after debug not necessary
   while (!Serial) {
@@ -74,7 +82,7 @@ void setup() {//this setup part is from webclient aplication example of ethernet
 
   client.write("arduino");//arduino name for connectimg to server
   Serial.println("name sent");
-  sg90.attach(9);
+  sg90.attach(9);// servo connected to pin 9
 }
 
 void loop() {
