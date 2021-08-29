@@ -44,7 +44,6 @@ void closeAll(){
     send(clients[i].socket , "close" , strlen("close") , 0 );
     pthread_cancel(clients[i].newT);
     close(clients[i].socket);
-    clients[i].name=="";
   
     if(clients[i+1].name == ""){
       break;
@@ -62,7 +61,6 @@ int closeClient(string Args){
 	  send(clients[i].socket , "close" , strlen("close") , 0 );
 	  pthread_cancel(clients[i].newT);
 	  close(clients[i].socket);
-	  clients[i].name=="";
       return 1;
 	}
   }
@@ -118,6 +116,7 @@ int sendArdu(string message,client newClient){
       else if(message == "led status"){
 		send(clients[i].socket , "c" , strlen("c") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
+		while(vread==0){;}
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
 	  }
@@ -130,6 +129,7 @@ int sendArdu(string message,client newClient){
       else if(message == "temp"){
 		send(clients[i].socket , "e" , strlen("e") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
+		while(vread==0){;}
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );	
         return 1;
       }
@@ -137,6 +137,7 @@ int sendArdu(string message,client newClient){
       else if(message == "humd"){
 		send(clients[i].socket , "f" , strlen("f") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
+		while(vread==0){;}
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );	
         return 1;
       }
@@ -231,26 +232,21 @@ void * handleClient(void * Args){
       if(command=="ardu"){
         check = sendArdu(message,newClient);
         send(newClient.socket , "sending message to ardu" , strlen("sending message to ardu") , 0 );
-        check = 1;
       }
 	  else if(command=="clnt"){
 	    check = sendClient(message,newClient);
         send(newClient.socket , "sending message to client" , strlen("sending message to client") , 0 );
-	    check = 1;
 	  }
 	  else if(command=="list"){
 	    string listString ; 
 	    listString = listStr();
 	    char* charList = &listString[0];
 	    send(newClient.socket , charList , strlen(charList) , 0 );			
-	    memset(charList,0,1000);
+	    memset(charList,0,strlen(charList));
 	    check = 1;
 	  }
 	  else if(command=="exit"){
-		close(newClient.socket);
-		newClient.name="";
-		pthread_cancel(newClient.newT);
-	    check = 1;
+		closeClient(newClient.name);  
 	  }
 	  if (check==0){
 	    send(newClient.socket , "error" , strlen("error") , 0 );	
