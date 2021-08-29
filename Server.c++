@@ -204,8 +204,8 @@ void * handleInput(void * Args){
 string listStr(){
   string list="";
   for(int i=0;i<20;i++){
-    list+=i+"."+clients[i].name+"\n"; 
-    if (clients[i].name==""){
+    list+=to_string(i)+"."+clients[i].name+"\n"; 
+    if (clients[i+1].name==""){
     break;
     }
   }
@@ -252,7 +252,7 @@ void * handleClient(void * Args){
 	    string listString ; 
 	    listString = listStr();
 	    char* charList = &listString[0];
-	    cout << charList<<"\n";
+	    cout << charList;
             cout.flush();
 	    send(newClient.socket , charList , listString.length() , 0 );			
 	    check = 1;
