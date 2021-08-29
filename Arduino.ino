@@ -14,9 +14,9 @@ IPAddress myDns(192, 168, 0, 1);
 
 //create Ethernet client object to use client library
 EthernetClient client;
-int DhtPin=12; 
+int DhtPin=2; 
 //create lcd object
-LiquidCrystal lcd = LiquidCrystal(2, 3, 4, 5, 6, 7);
+LiquidCrystal lcd = LiquidCrystal(24, 3, 4, 5, 6, 7);
 
 //creat dht11 sensor object
 dht11 dht_sensor;
@@ -27,12 +27,11 @@ int Lii         = 0;
 
 void setup() {//this setup part is from webclient aplication example of ethernet library https://github.com/arduino-libraries/Ethernet
   lcd.begin(16, 2);
-  sg90.attach(11);
+  
   pinMode(8, OUTPUT);
-  pinMode(9, INPUT);
-  pinMode(10, OUTPUT);
-  digitalWrite(10, LOW);
-
+  pinMode(22, OUTPUT);
+  pinMode(23, INPUT);
+  
   Serial.begin(9600);//Serial port is used for debugging and to see recieved data after debug not necessary
   while (!Serial) {
     ; // wait for serial port to connect.
@@ -75,10 +74,12 @@ void setup() {//this setup part is from webclient aplication example of ethernet
 
   client.write("arduino");//arduino name for connectimg to server
   Serial.println("name sent");
+  sg90.attach(9);
 }
 
 void loop() {
-   digitalWrite(10, LOW);
+
+  digitalWrite(10, LOW);
   // if there are incoming bytes available
   // from the server, read them and print them:
   int len = client.available();
@@ -125,10 +126,10 @@ void loop() {
     // if messsage has 1 char "c" then send led status
     else if (buffer[0]==99){
       String stat="";
-      if (digitalRead(9)== HIGH){
+      if (digitalRead(23)== HIGH){
         stat+="led 1 set high\n";
       }
-      else if(digitalRead(9)== LOW){
+      else if(digitalRead(23)== LOW){
         stat+="led 1 set low\n";
       }
       client.println(stat);
@@ -136,9 +137,9 @@ void loop() {
     // if messsage has 1 char "d" then set buzzer on
     else if (buffer[0]==100){
       for(int i = 5;i>0;i--){
-        digitalWrite(10, HIGH);
+        digitalWrite(22, HIGH);
         delay(100);
-        digitalWrite(10, LOW);
+        digitalWrite(22, LOW);
         delay(100);
       }
     }
