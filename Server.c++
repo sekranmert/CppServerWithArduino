@@ -238,6 +238,8 @@ void * handleClient(void * Args){
         check = 1;
       }
 	  else if(command=="clnt"){
+	    cout << "Sending message...";
+            cout.flush();
 	    check = sendClient(message,newClient);
         send(newClient.socket , "sending message to client" , strlen("sending message to client") , 0 );
         check = 1;
