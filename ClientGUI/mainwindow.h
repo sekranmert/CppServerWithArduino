@@ -22,9 +22,13 @@ private slots:
     void on_btnSend_clicked();
     void on_btnLed1On_clicked();
     void on_btnLed1Off_clicked();
-    void on_btnLed2On_clicked();
-    void on_btnLed2Off_clicked();
     void on_btnBuzzerOn_clicked();
+    void on_btnLedStat_clicked();
+    void on_btn0Degr_clicked();
+    void on_btn90Degr_clicked();
+    void on_btn180Degr_clicked();
+    void on_btnHumd_clicked();
+    void on_btnTemp_clicked();
     void on_btnLCD_clicked();
     void on_btnClient_clicked();
     void on_btnList_clicked();

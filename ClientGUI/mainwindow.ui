@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>626</width>
+    <width>810</width>
     <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TCP Socket GUI</string>
+   <string>Client Application</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -22,36 +22,76 @@
         <item>
          <widget class="QPushButton" name="btnLed1On">
           <property name="text">
-           <string>LED 1 ON</string>
+           <string>LED ON</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="btnLed1Off">
           <property name="text">
-           <string>LED 1 OFF</string>
+           <string>LED OFF</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnLedStat">
+          <property name="text">
+           <string>LED STATUS</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QPushButton" name="btnLed2On">
+         <widget class="QPushButton" name="btn0Degr">
           <property name="text">
-           <string>LED 2 ON</string>
+           <string>0 Degree</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btnLed2Off">
+         <widget class="QPushButton" name="btn90Degr">
           <property name="text">
-           <string>LED 2 OFF</string>
+           <string>90 Degree</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn180Degr">
+          <property name="text">
+           <string>180 Degree</string>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -85,6 +125,20 @@
              <widget class="QPushButton" name="btnBuzzerOn">
               <property name="text">
                <string>Buzzer</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnTemp">
+              <property name="text">
+               <string>Temperature</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btnHumd">
+              <property name="text">
+               <string>Humidity</string>
               </property>
              </widget>
             </item>
@@ -135,7 +189,7 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>150</height>
+        <height>500</height>
        </size>
       </property>
       <property name="lineWidth">
@@ -151,6 +205,12 @@
     </item>
     <item>
      <widget class="QPlainTextEdit" name="txtSend">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>608</width>
@@ -176,6 +236,12 @@
       <property name="enabled">
        <bool>false</bool>
       </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
        <string>Send</string>
       </property>
@@ -190,9 +256,8 @@
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
   <tabstop>btnLed1On</tabstop>
-  <tabstop>btnLed2On</tabstop>
   <tabstop>btnLed1Off</tabstop>
-  <tabstop>btnLed2Off</tabstop>
+  <tabstop>btn180Degr</tabstop>
   <tabstop>txtReceive</tabstop>
  </tabstops>
  <resources/>

@@ -34,7 +34,6 @@ void MainWindow::on_btnConnect_clicked()
         socket = new QTcpSocket(this);
         socket_events();
         socket->connectToHost(ui->txtIP->text(), 9999);
-        ui->txtReceive->appendPlainText("enter a name:");
     }
     else
     {
@@ -71,6 +70,7 @@ void MainWindow::update(bool connected)
 void MainWindow::on_btnSend_clicked()
 {
     socket->write(ui->txtSend->toPlainText().toUtf8());
+    ui->txtSend->clear();
 }
 
 void MainWindow::on_btnLed1On_clicked()
@@ -83,14 +83,34 @@ void MainWindow::on_btnLed1Off_clicked()
     socket->write("ardu led 1 off");
 }
 
-void MainWindow::on_btnLed2On_clicked()
+void MainWindow::on_btnLedStat_clicked()
 {
-    socket->write("ardu led 2 on");
+    socket->write("ardu led status");
 }
 
-void MainWindow::on_btnLed2Off_clicked()
+void MainWindow::on_btn0Degr_clicked()
 {
-    socket->write("ardu led 2 off");
+    socket->write("ardu servo 0");
+}
+
+void MainWindow::on_btn90Degr_clicked()
+{
+    socket->write("ardu servo 90");
+}
+
+void MainWindow::on_btn180Degr_clicked()
+{
+    socket->write("ardu servo 180");
+}
+
+void MainWindow::on_btnTemp_clicked()
+{
+    socket->write("ardu temp");
+}
+
+void MainWindow::on_btnHumd_clicked()
+{
+    socket->write("ardu humd");
 }
 
 void MainWindow::on_btnBuzzerOn_clicked()
@@ -126,6 +146,7 @@ void MainWindow::on_btnClose_clicked()
 void MainWindow::socket_connected()
 {
     log("socket_connected");
+    ui->txtReceive->appendPlainText("enter a name:");
 }
 
 void MainWindow::socket_disconnected()
