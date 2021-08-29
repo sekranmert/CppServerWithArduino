@@ -204,7 +204,7 @@ void * handleInput(void * Args){
 string listStr(){
   string list="";
   for(int i=0;i<20;i++){
-    list+=i+"."+clients[i].name+"\n";
+    list+=clients[i].name+"\n";
   }
   return list;
 }
