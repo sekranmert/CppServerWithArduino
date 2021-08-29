@@ -44,6 +44,7 @@ void closeAll(){
     send(clients[i].socket , "close" , strlen("close") , 0 );
     pthread_cancel(clients[i].newT);
     close(clients[i].socket);
+    clients[i].name=="";
   
     if(clients[i+1].name == ""){
       break;
@@ -61,6 +62,7 @@ int closeClient(string Args){
 	  send(clients[i].socket , "close" , strlen("close") , 0 );
 	  pthread_cancel(clients[i].newT);
 	  close(clients[i].socket);
+	  clients[i].name=="";
       return 1;
 	}
   }
@@ -229,21 +231,26 @@ void * handleClient(void * Args){
       if(command=="ardu"){
         check = sendArdu(message,newClient);
         send(newClient.socket , "sending message to ardu" , strlen("sending message to ardu") , 0 );
+        check = 1;
       }
 	  else if(command=="clnt"){
 	    check = sendClient(message,newClient);
         send(newClient.socket , "sending message to client" , strlen("sending message to client") , 0 );
+	    check = 1;
 	  }
 	  else if(command=="list"){
 	    string listString ; 
 	    listString = listStr();
 	    char* charList = &listString[0];
 	    send(newClient.socket , charList , strlen(charList) , 0 );			
-	    memset(charList,0,strlen(charList));
+	    memset(charList,0,1000);
 	    check = 1;
 	  }
 	  else if(command=="exit"){
-		closeClient(newClient.name);  
+		close(newClient.socket);
+		newClient.name="";
+		pthread_cancel(newClient.newT);
+	    check = 1;
 	  }
 	  if (check==0){
 	    send(newClient.socket , "error" , strlen("error") , 0 );	
@@ -333,9 +340,8 @@ int main(int argc, char const *argv[])
       if(pthread_create(&clients[a].newT,NULL, handleClient,&clients[a])!=0){
 	  cout<<"failed to create thread";
 	  cout.flush();
-      }
+      } 
+      a++;
     } 
-    a++;
-     
   } 
 }
