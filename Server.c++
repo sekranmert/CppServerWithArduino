@@ -342,8 +342,8 @@ int main(int argc, char const *argv[])
       if(pthread_create(&clients[a].newT,NULL, handleClient,&clients[a])!=0){
 	  cout<<"failed to create thread";
 	  cout.flush();
-      } 
-      a++;
+      }  
     } 
+    a++;	  
   } 
 }
