@@ -116,7 +116,7 @@ int sendArdu(string message,client newClient){
       else if(message == "led status"){
 		send(clients[i].socket , "c" , strlen("c") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
-		while(vread==0){;}
+		while(vRead==0){;}
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );		  
 	    return 1;
 	  }
@@ -129,7 +129,7 @@ int sendArdu(string message,client newClient){
       else if(message == "temp"){
 		send(clients[i].socket , "e" , strlen("e") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
-		while(vread==0){;}
+		while(vRead==0){;}
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );	
         return 1;
       }
@@ -137,7 +137,7 @@ int sendArdu(string message,client newClient){
       else if(message == "humd"){
 		send(clients[i].socket , "f" , strlen("f") , 0 );
 		vRead = read(clients[i].socket,rBuffer,1024);
-		while(vread==0){;}
+		while(vRead==0){;}
 		send(newClient.socket , rBuffer , strlen(rBuffer) , 0 );	
         return 1;
       }
